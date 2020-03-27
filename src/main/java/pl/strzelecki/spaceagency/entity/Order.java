@@ -10,6 +10,7 @@ import pl.strzelecki.spaceagency.entity.serializer.LocalDateSerializer;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -33,4 +34,6 @@ public class Order {
     private LocalDate orderDate;
 
     // add list of product_order
+//    @OneToMany(mappedBy = "order_id")
+//    List<ProductOrder> orderedProducts;
 }

@@ -20,6 +20,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findAll() {
-        return null;
+        return orderRepository.findAll();
     }
 }
