@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import pl.strzelecki.spaceagency.entity.Mission;
 import pl.strzelecki.spaceagency.repository.MissionRepository;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class MissionServiceImpl implements AgencyService<Mission> {
 
     private static final Logger logger = LogManager.getLogger(MissionServiceImpl.class);

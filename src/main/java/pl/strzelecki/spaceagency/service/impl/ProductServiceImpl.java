@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import pl.strzelecki.spaceagency.entity.DTO.ProductByMissionDTO;
 import pl.strzelecki.spaceagency.entity.DTO.ProductByTypeOrDateDTO;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
     private static final Logger logger = LogManager.getLogger(ProductServiceImpl.class);

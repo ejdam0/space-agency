@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.strzelecki.spaceagency.entity.Mission;
 import pl.strzelecki.spaceagency.repository.MissionRepository;
 import pl.strzelecki.spaceagency.service.DuplicateFinder;
@@ -11,6 +12,7 @@ import pl.strzelecki.spaceagency.service.DuplicateFinder;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class MissionDuplicateFinder implements DuplicateFinder<Mission> {
 
     private static final Logger logger = LogManager.getLogger(MissionDuplicateFinder.class);

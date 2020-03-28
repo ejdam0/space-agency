@@ -4,11 +4,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.strzelecki.spaceagency.entity.Product;
 import pl.strzelecki.spaceagency.repository.ProductRepository;
 import pl.strzelecki.spaceagency.service.DuplicateFinder;
 
 @Service
+@Transactional
 public class ProductDuplicateFinder implements DuplicateFinder<Product> {
 
     private static final Logger logger = LogManager.getLogger(ProductDuplicateFinder.class);

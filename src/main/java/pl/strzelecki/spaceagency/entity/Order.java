@@ -17,6 +17,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedEntityGraph(name = "Order.op",
+    attributeNodes = @NamedAttributeNode("orderedProducts"))
 public class Order {
 
     @Id
@@ -24,7 +26,7 @@ public class Order {
     @Column(name = "id")
     private long id;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
@@ -33,7 +35,21 @@ public class Order {
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate orderDate;
 
-    // add list of product_order
-//    @OneToMany(mappedBy = "order_id")
-//    List<ProductOrder> orderedProducts;
+    @OneToMany(mappedBy = "pk.order",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
+    List<ProductOrder> orderedProducts;
+
+    @Transient
+    public double getTotalOrderPrice() {
+        List<ProductOrder> orderedProducts = this.getOrderedProducts();
+        return orderedProducts.stream()
+                .mapToDouble(ProductOrder::getTotalPrice)
+                .sum();
+    }
+
+    @Transient
+    public int getNumberOfProducts() {
+        return this.orderedProducts.size();
+    }
 }

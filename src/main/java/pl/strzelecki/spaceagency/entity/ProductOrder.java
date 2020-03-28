@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "product_order")
@@ -21,19 +18,23 @@ public class ProductOrder {
     @JsonIgnore
     private ProductOrderPK pk;
 
-//    @Column(name = "order_id")
-//    private Order order;
-//
-//    @Column(name = "product_id")
-//    private Product product;
-
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    public ProductOrder(Order order, Product product, Integer quantity) {
+    public ProductOrder(Order order, Product product, int quantity) {
         pk = new ProductOrderPK();
         pk.setOrder(order);
         pk.setProduct(product);
         this.quantity = quantity;
+    }
+
+    @Transient
+    public Product getProduct() {
+        return this.pk.getProduct();
+    }
+
+    @Transient
+    public double getTotalPrice() {
+        return this.getProduct().getPrice() * this.getQuantity();
     }
 }
