@@ -1,5 +1,6 @@
 package pl.strzelecki.spaceagency.entity.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class ProductByMissionDTO {
 
     private double price;
 
+    @JsonIgnore
     private String url;
 
     public ProductByMissionDTO(long id, LocalDate acquisitionDate, String footprint, double price, String url) {

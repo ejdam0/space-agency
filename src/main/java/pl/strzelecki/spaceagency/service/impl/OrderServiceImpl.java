@@ -8,12 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import pl.strzelecki.spaceagency.entity.*;
 import pl.strzelecki.spaceagency.entity.DTO.OrderDTO;
 import pl.strzelecki.spaceagency.entity.DTO.TopMissionDTO;
 import pl.strzelecki.spaceagency.entity.DTO.TopProductDTO;
-import pl.strzelecki.spaceagency.repository.CustomerRepository;
+import pl.strzelecki.spaceagency.entity.*;
 import pl.strzelecki.spaceagency.repository.OrderRepository;
+import pl.strzelecki.spaceagency.repository.PersonRepository;
 import pl.strzelecki.spaceagency.service.OrderService;
 import pl.strzelecki.spaceagency.service.ProductService;
 
@@ -28,14 +28,14 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
     private ProductService productService;
-    private CustomerRepository customerRepository;
+    private PersonRepository personRepository;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository,
-                            CustomerRepository customerRepository,
+                            PersonRepository personRepository,
                             ProductService productService) {
         this.orderRepository = orderRepository;
-        this.customerRepository = customerRepository;
+        this.personRepository = personRepository;
         this.productService = productService;
     }
 
@@ -50,20 +50,20 @@ public class OrderServiceImpl implements OrderService {
         logger.info("Create new order");
         logger.trace("Creating new order that will be saved in database");
         Order placedOrder = new Order();
-        // get customer from db
-        logger.trace("Getting customer provided in order, from database");
-        Optional<Customer> optCustomerInDb = customerRepository.findById(orderDTO.getCustomer().getId());
-        logger.trace("Checking if customer exists in database");
+        // get person from db
+        logger.trace("Getting person provided in order, from database");
+        Optional<Person> optCustomerInDb = personRepository.findById(orderDTO.getPerson().getId());
+        logger.trace("Checking if person exists in database");
         if (optCustomerInDb.isEmpty()) {
-            logger.info("Customer does not exist in the database");
-            logger.error("Exception while searching for customer - customer does not exist");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This customer does not exist in the database.");
+            logger.info("Person does not exist in the database");
+            logger.error("Exception while searching for person - person does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This person does not exist in the database.");
         }
-        logger.trace("Customer exists in database");
-        Customer customer = optCustomerInDb.get();
-        // set customer and date
-        logger.trace("Setting new order's customer and date");
-        placedOrder.setCustomer(customer);
+        logger.trace("Person exists in database");
+        Person person = optCustomerInDb.get();
+        // set person and date
+        logger.trace("Setting new order's person and date");
+        placedOrder.setPerson(person);
         placedOrder.setOrderDate(LocalDate.now());
 
         // save order to database
@@ -110,16 +110,26 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrderHistory(long id) {
+        logger.info("Get order history of a customer");
+        logger.trace("Checking if person with given id is either a customer or a content manager");
+        Optional<Person> personFromDb = personRepository.findById(id);
+        if (personFromDb.isPresent() && personFromDb.get().getAuthority().equals("'ROLE_CM")) {
+            logger.error("Exception - person with that id is a content manager");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "That person is a content manager.");
+        }
+        logger.info("Returning result");
         return orderRepository.getOrderHistory(id);
     }
 
     @Override
     public List<TopProductDTO> getMostOrderedProducts() {
+        logger.info("Get most ordered products");
         return orderRepository.getMostOrderedProducts();
     }
 
     @Override
     public List<TopMissionDTO> getMostOrderedMissions() {
+        logger.info("Get most ordered missions");
         return orderRepository.getMostOrderedMissions();
     }
 

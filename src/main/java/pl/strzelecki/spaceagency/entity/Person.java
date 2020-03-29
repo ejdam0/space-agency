@@ -4,15 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "person")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
+public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +26,10 @@ public class Customer {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @JsonIgnore
+    @Column(name = "authority", nullable = false)
+    private String authority;
+
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -32,4 +37,7 @@ public class Customer {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @JsonIgnore
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled;
 }

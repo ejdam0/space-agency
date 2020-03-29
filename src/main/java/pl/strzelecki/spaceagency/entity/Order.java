@@ -27,8 +27,8 @@ public class Order {
     private long id;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    @JoinColumn(name = "person_id", nullable = false)
+    private Person person;
 
     @Column(name = "order_date", nullable = false)
     @JsonDeserialize(using = LocalDateDeserializer.class)

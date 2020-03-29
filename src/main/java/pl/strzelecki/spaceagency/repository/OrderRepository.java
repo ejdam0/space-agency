@@ -16,8 +16,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAll();
 
     @EntityGraph(value = "Order.op", type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT o FROM Order o JOIN FETCH o.orderedProducts WHERE o.customer.id = :customerId")
-    List<Order> getOrderHistory(@Param("customerId") long id);
+    @Query("SELECT o FROM Order o JOIN FETCH o.orderedProducts WHERE o.person.id = :personId")
+    List<Order> getOrderHistory(@Param("personId") long id);
 
     @Query("SELECT new pl.strzelecki.spaceagency.entity.DTO.TopProductDTO" +
             "(po.pk.product.id, SUM(po.quantity)) " +

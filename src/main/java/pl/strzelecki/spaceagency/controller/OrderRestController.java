@@ -50,7 +50,7 @@ public class OrderRestController {
     }
 
     @GetMapping("/history")
-    public ResponseEntity<?> getOrdersHistoryOfCustomer(@RequestParam(value = "customer-id") long id) {
+    public ResponseEntity<?> getOrdersHistoryOfCustomer(@RequestParam(value = "person-id") long id) {
         logger.info("Get history of orders");
         List<Order> result;
         try {

@@ -18,31 +18,23 @@ create table product (
 	url varchar(200) not null
 );
 
-drop table if exists content_manager;
+drop table if exists person;
 
-create table content_manager (
+create table person (
 	id IDENTITY primary key,
 	first_name varchar(50) not null,
 	last_name varchar(100) not null,
+	authority varchar(10) not null,
 	username varchar(10) not null unique,
-	password varchar(10) not null
-);
-
-drop table if exists customer;
-
-create table customer (
-	id IDENTITY primary key,
-	first_name varchar(50) not null,
-	last_name varchar(100) not null,
-	username varchar(10) not null unique,
-	password varchar(10) not null
+	password varchar(60) not null,
+	enabled BOOLEAN NOT NULL DEFAULT true
 );
 
 drop table if exists orders;
 
 create table orders (
     id IDENTITY primary key,
-	customer_id integer not null references customer(id),
+	person_id integer not null references person(id),
     order_date date not null default current_date
 );
 
@@ -53,5 +45,3 @@ create table product_order (
     product_id integer not null references product(id),
     quantity integer not null
 );
-
-
