@@ -2,6 +2,7 @@ package pl.strzelecki.spaceagency.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 
 @Embeddable
 @Data
+@NoArgsConstructor
 public class ProductOrderPK implements Serializable {
 
     @JsonBackReference
@@ -21,4 +23,8 @@ public class ProductOrderPK implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public ProductOrderPK(Order order) {
+        this.order = order;
+    }
 }

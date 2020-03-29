@@ -29,7 +29,7 @@ public class MissionRestController {
     @GetMapping("/all")
     public ResponseEntity<List<Mission>> findAll() {
         logger.info("Find all missions");
-        logger.trace("Calling missionService do find all missions");
+        logger.trace("Calling missionService to find all missions");
         return new ResponseEntity<>(missionService.findAll(), HttpStatus.OK);
     }
 
@@ -50,7 +50,7 @@ public class MissionRestController {
         return new ResponseEntity<>("Added new mission:\n " + mission, HttpStatus.CREATED);
     }
 
-    @PutMapping("/edit/")
+    @PutMapping("/edit")
     public ResponseEntity<?> edit(@RequestBody Mission mission) {
         logger.info("Edit a mission");
         try {

@@ -68,23 +68,20 @@ public class ProductRestController {
         return new ResponseEntity<>("Deleted product with id: " + id, HttpStatus.OK);
     }
 
-    @GetMapping("/searchByName")
-    public ResponseEntity<?> findByMissionName(@RequestParam(value = "missionName") String missionName) {
+    @GetMapping("/search-by-name")
+    public ResponseEntity<?> findByMissionName(@RequestParam(value = "mission-name") String missionName) {
         logger.info("Find product by mission name");
         logger.trace("Calling productService to find products by mission name");
         List<ProductByMissionDTO> result = productService.findAllByMissionName(missionName);
-        logger.trace("Checking size of the result list");
-        if (result.size() == 0) {
-            logger.info("Result list is empty");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        logger.info("Result list has some entries");
-        return new ResponseEntity<>(result, HttpStatus.OK);
+
+        logger.trace("Checking size of results list. Returning responseEntity");
+        return result.size() == 0 ? new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @ExceptionHandler(TypeMismatchException.class)
-    @GetMapping("/searchByType")
-    public ResponseEntity<?> findByProductType(@RequestParam(value = "productType") String productType) {
+    @GetMapping("/search-by-type")
+    public ResponseEntity<?> findByProductType(@RequestParam(value = "product-type") String productType) {
         logger.info("Find product by product type");
         logger.trace("Creating empty list of results");
         List<ProductByTypeOrDateDTO> result;
@@ -95,20 +92,16 @@ public class ProductRestController {
             logger.error("Exception while trying to save the product: " + e.getMessage());
             return new ResponseEntity<>(e.getMessage(), e.getStatus());
         }
-        logger.trace("Checking size of the result list");
-        if (result.size() == 0) {
-            logger.info("Result list is empty");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        logger.info("Result list has some entries");
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        logger.trace("Checking size of results list. Returning responseEntity");
+        return result.size() == 0 ? new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/searchByDate")
+    @GetMapping("/search-by-date")
     public ResponseEntity<?> findByAcquisitionDate(
             @RequestParam(value = "flag") String flag,
-            @RequestParam(value = "firstDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate firstDate,
-            @RequestParam(value = "secondDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate secondDate) {
+            @RequestParam(value = "first-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate firstDate,
+            @RequestParam(value = "second-date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate secondDate) {
 
         logger.info("Find product by acquisition date");
         logger.trace("Checking parameters");

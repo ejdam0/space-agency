@@ -101,6 +101,11 @@
             <artifactId>lombok</artifactId>
             <version>1.18.10</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava-collections</artifactId>
+            <version>r03</version>
+        </dependency>
         <!-- Apache commons -->
         <dependency>
             <groupId>org.apache.commons</groupId>

@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @NamedEntityGraph(name = "Order.op",
-    attributeNodes = @NamedAttributeNode("orderedProducts"))
+        attributeNodes = @NamedAttributeNode("orderedProducts"))
 public class Order {
 
     @Id
@@ -38,7 +38,7 @@ public class Order {
     @OneToMany(mappedBy = "pk.order",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
-    List<ProductOrder> orderedProducts;
+    private List<ProductOrder> orderedProducts;
 
     @Transient
     public double getTotalOrderPrice() {

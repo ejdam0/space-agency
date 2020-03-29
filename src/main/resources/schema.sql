@@ -53,6 +53,5 @@ create table product_order (
     product_id integer not null references product(id),
     quantity integer not null
 );
-ALTER TABLE product_order ADD PRIMARY KEY (order_id, product_id);
 
 
