@@ -58,6 +58,10 @@ public class OrderServiceImpl implements OrderService {
             logger.info("Person does not exist in the database");
             logger.error("Exception while searching for person - person does not exist");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This person does not exist in the database.");
+        } else if (optCustomerInDb.get().getAuthority().equals("ROLE_CM")) {
+            logger.trace("Checking if person with given id is either a customer or a content manager");
+            logger.error("Exception - person with that id is a content manager");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "That person is a content manager and not a customer.");
         }
         logger.trace("Person exists in database");
         Person person = optCustomerInDb.get();
@@ -113,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
         logger.info("Get order history of a customer");
         logger.trace("Checking if person with given id is either a customer or a content manager");
         Optional<Person> personFromDb = personRepository.findById(id);
-        if (personFromDb.isPresent() && personFromDb.get().getAuthority().equals("'ROLE_CM")) {
+        if (personFromDb.isPresent() && personFromDb.get().getAuthority().equals("ROLE_CM")) {
             logger.error("Exception - person with that id is a content manager");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "That person is a content manager.");
         }
