@@ -30,7 +30,10 @@ public class MissionRestController {
     public ResponseEntity<List<Mission>> findAll() {
         logger.info("Find all missions");
         logger.trace("Calling missionService to find all missions");
-        return new ResponseEntity<>(missionService.findAll(), HttpStatus.OK);
+        List<Mission> result = missionService.findAll();
+        logger.trace("Checking size of results list. Returning responseEntity");
+        return result.size() == 0 ? new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("/add")
