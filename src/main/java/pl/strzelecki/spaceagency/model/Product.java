@@ -1,14 +1,13 @@
-package pl.strzelecki.spaceagency.entity;
+package pl.strzelecki.spaceagency.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.URL;
-import pl.strzelecki.spaceagency.entity.serializer.LocalDateDeserializer;
-import pl.strzelecki.spaceagency.entity.serializer.LocalDateSerializer;
+import pl.strzelecki.spaceagency.model.serializer.LocalDateDeserializer;
+import pl.strzelecki.spaceagency.model.serializer.LocalDateSerializer;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -41,7 +40,6 @@ public class Product {
     private double price;
 
     @Column(name = "url", nullable = false)
-    @URL
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 }

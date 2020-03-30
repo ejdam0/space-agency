@@ -1,4 +1,4 @@
-package pl.strzelecki.spaceagency.entity.DTO;
+package pl.strzelecki.spaceagency.model.DTO;
 
 import lombok.Data;
 

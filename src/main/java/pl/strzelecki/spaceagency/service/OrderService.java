@@ -1,9 +1,9 @@
 package pl.strzelecki.spaceagency.service;
 
-import pl.strzelecki.spaceagency.entity.DTO.OrderDTO;
-import pl.strzelecki.spaceagency.entity.DTO.TopMissionDTO;
-import pl.strzelecki.spaceagency.entity.DTO.TopProductDTO;
-import pl.strzelecki.spaceagency.entity.Order;
+import pl.strzelecki.spaceagency.model.DTO.OrderDTO;
+import pl.strzelecki.spaceagency.model.DTO.TopMissionDTO;
+import pl.strzelecki.spaceagency.model.DTO.TopProductDTO;
+import pl.strzelecki.spaceagency.model.Order;
 
 import java.util.List;
 

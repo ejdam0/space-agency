@@ -1,7 +1,7 @@
 package pl.strzelecki.spaceagency.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.strzelecki.spaceagency.entity.Mission;
+import pl.strzelecki.spaceagency.model.Mission;
 
 import java.util.Optional;
 

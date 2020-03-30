@@ -1,7 +1,7 @@
-package pl.strzelecki.spaceagency.entity.DTO;
+package pl.strzelecki.spaceagency.model.DTO;
 
 import lombok.Data;
-import pl.strzelecki.spaceagency.entity.Person;
+import pl.strzelecki.spaceagency.model.Person;
 
 import java.util.Map;
 

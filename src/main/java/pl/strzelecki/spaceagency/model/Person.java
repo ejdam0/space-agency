@@ -1,10 +1,9 @@
-package pl.strzelecki.spaceagency.entity;
+package pl.strzelecki.spaceagency.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 

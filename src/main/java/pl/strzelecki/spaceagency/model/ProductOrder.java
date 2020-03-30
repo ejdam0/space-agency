@@ -1,4 +1,4 @@
-package pl.strzelecki.spaceagency.entity;
+package pl.strzelecki.spaceagency.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

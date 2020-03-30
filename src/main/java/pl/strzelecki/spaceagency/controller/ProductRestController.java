@@ -9,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pl.strzelecki.spaceagency.entity.DTO.ProductByMissionDTO;
-import pl.strzelecki.spaceagency.entity.DTO.ProductByTypeOrDateDTO;
-import pl.strzelecki.spaceagency.entity.Product;
+import pl.strzelecki.spaceagency.model.DTO.ProductByMissionDTO;
+import pl.strzelecki.spaceagency.model.DTO.ProductByTypeOrDateDTO;
+import pl.strzelecki.spaceagency.model.Product;
 import pl.strzelecki.spaceagency.service.ProductService;
 
 import java.time.LocalDate;

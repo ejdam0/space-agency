@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import pl.strzelecki.spaceagency.entity.Mission;
+import pl.strzelecki.spaceagency.model.Mission;
 import pl.strzelecki.spaceagency.repository.MissionRepository;
 import pl.strzelecki.spaceagency.service.AgencyService;
 import pl.strzelecki.spaceagency.service.DuplicateFinder;

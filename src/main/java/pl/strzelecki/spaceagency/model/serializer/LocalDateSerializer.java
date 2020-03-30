@@ -1,4 +1,4 @@
-package pl.strzelecki.spaceagency.entity.serializer;
+package pl.strzelecki.spaceagency.model.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

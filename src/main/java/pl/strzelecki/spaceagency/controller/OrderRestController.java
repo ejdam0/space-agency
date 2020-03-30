@@ -7,10 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pl.strzelecki.spaceagency.entity.DTO.OrderDTO;
-import pl.strzelecki.spaceagency.entity.DTO.TopMissionDTO;
-import pl.strzelecki.spaceagency.entity.DTO.TopProductDTO;
-import pl.strzelecki.spaceagency.entity.Order;
+import pl.strzelecki.spaceagency.model.DTO.OrderDTO;
+import pl.strzelecki.spaceagency.model.DTO.TopMissionDTO;
+import pl.strzelecki.spaceagency.model.DTO.TopProductDTO;
+import pl.strzelecki.spaceagency.model.Order;
 import pl.strzelecki.spaceagency.service.OrderService;
 
 import java.util.List;

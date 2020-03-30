@@ -1,7 +1,7 @@
 package pl.strzelecki.spaceagency.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.strzelecki.spaceagency.entity.ProductOrder;
+import pl.strzelecki.spaceagency.model.ProductOrder;
 
 public interface ProductOrderRepository extends JpaRepository<ProductOrder, Long> {
 }

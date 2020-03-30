@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.strzelecki.spaceagency.entity.Product;
+import pl.strzelecki.spaceagency.model.Product;
 import pl.strzelecki.spaceagency.repository.ProductRepository;
 import pl.strzelecki.spaceagency.service.DuplicateFinder;
 

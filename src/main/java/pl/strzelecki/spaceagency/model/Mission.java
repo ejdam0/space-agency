@@ -1,4 +1,4 @@
-package pl.strzelecki.spaceagency.entity;
+package pl.strzelecki.spaceagency.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.strzelecki.spaceagency.entity.serializer.LocalDateDeserializer;
-import pl.strzelecki.spaceagency.entity.serializer.LocalDateSerializer;
+import pl.strzelecki.spaceagency.model.serializer.LocalDateDeserializer;
+import pl.strzelecki.spaceagency.model.serializer.LocalDateSerializer;
 
 import javax.persistence.*;
 import java.time.LocalDate;

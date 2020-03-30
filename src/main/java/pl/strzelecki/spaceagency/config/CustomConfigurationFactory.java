@@ -22,10 +22,10 @@ public class CustomConfigurationFactory extends ConfigurationFactory {
         AppenderComponentBuilder console = builder.newAppender("Stdout", "CONSOLE")
                 .addAttribute("target", ConsoleAppender.Target.SYSTEM_OUT);
 
-        LayoutComponentBuilder standard = builder.newLayout("PatternLayout");
-        standard.addAttribute("pattern", "%d [%t] %C{} |%-5level| %msg%n%throwable");
+        LayoutComponentBuilder standardLayout = builder.newLayout("PatternLayout");
+        standardLayout.addAttribute("pattern", "%d [%t] %C{} |%-5level| %msg%n%throwable");
 
-        console.add(standard);
+        console.add(standardLayout);
         builder.add(console);
 
         RootLoggerComponentBuilder rootLogger = builder.newRootLogger(Level.ERROR);

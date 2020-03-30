@@ -1,19 +1,17 @@
-package pl.strzelecki.spaceagency.entity.DTO;
+package pl.strzelecki.spaceagency.model.DTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
-import pl.strzelecki.spaceagency.entity.serializer.LocalDateDeserializer;
-import pl.strzelecki.spaceagency.entity.serializer.LocalDateSerializer;
+import pl.strzelecki.spaceagency.model.serializer.LocalDateDeserializer;
+import pl.strzelecki.spaceagency.model.serializer.LocalDateSerializer;
 
 import java.time.LocalDate;
 
 @Data
-public class ProductByTypeOrDateDTO {
+public class ProductByMissionDTO {
     private long id;
-
-    private String missionName;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
@@ -26,12 +24,11 @@ public class ProductByTypeOrDateDTO {
     @JsonIgnore
     private String url;
 
-    public ProductByTypeOrDateDTO(long id, LocalDate acquisitionDate, String footprint, double price, String url, String missionName) {
+    public ProductByMissionDTO(long id, LocalDate acquisitionDate, String footprint, double price, String url) {
         this.id = id;
         this.acquisitionDate = acquisitionDate;
         this.footprint = footprint;
         this.price = price;
         this.url = url;
-        this.missionName = missionName;
     }
 }

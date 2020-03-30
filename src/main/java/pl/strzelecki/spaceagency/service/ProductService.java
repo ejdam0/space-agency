@@ -1,8 +1,8 @@
 package pl.strzelecki.spaceagency.service;
 
-import pl.strzelecki.spaceagency.entity.DTO.ProductByMissionDTO;
-import pl.strzelecki.spaceagency.entity.DTO.ProductByTypeOrDateDTO;
-import pl.strzelecki.spaceagency.entity.Product;
+import pl.strzelecki.spaceagency.model.DTO.ProductByMissionDTO;
+import pl.strzelecki.spaceagency.model.DTO.ProductByTypeOrDateDTO;
+import pl.strzelecki.spaceagency.model.Product;
 
 import java.time.LocalDate;
 import java.util.List;

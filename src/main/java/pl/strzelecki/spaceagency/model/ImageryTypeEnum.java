@@ -1,4 +1,4 @@
-package pl.strzelecki.spaceagency.entity;
+package pl.strzelecki.spaceagency.model;
 
 public enum ImageryTypeEnum {
     PANCHROMATIC,
