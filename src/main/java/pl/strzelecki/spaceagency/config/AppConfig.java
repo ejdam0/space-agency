@@ -41,7 +41,7 @@ public class AppConfig {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(dataSource());
-        factory.setPackagesToScan("pl.strzelecki.spaceagency.entity");
+        factory.setPackagesToScan("pl.strzelecki.spaceagency.model");
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setJpaProperties(additionalProperties());
 

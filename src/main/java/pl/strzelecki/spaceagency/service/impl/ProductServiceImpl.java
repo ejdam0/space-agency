@@ -13,7 +13,6 @@ import pl.strzelecki.spaceagency.model.DTO.ProductByTypeOrDateDTO;
 import pl.strzelecki.spaceagency.model.ImageryTypeEnum;
 import pl.strzelecki.spaceagency.model.Product;
 import pl.strzelecki.spaceagency.repository.ProductRepository;
-import pl.strzelecki.spaceagency.service.DuplicateFinder;
 import pl.strzelecki.spaceagency.service.ProductService;
 
 import java.time.LocalDate;
@@ -27,13 +26,10 @@ public class ProductServiceImpl implements ProductService {
     private static final Logger logger = LogManager.getLogger(ProductServiceImpl.class);
 
     private ProductRepository productRepo;
-    private DuplicateFinder<Product> duplicateFinder;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepo,
-                              DuplicateFinder<Product> duplicateFinder) {
+    public ProductServiceImpl(ProductRepository productRepo) {
         this.productRepo = productRepo;
-        this.duplicateFinder = duplicateFinder;
     }
 
     @Override
@@ -47,12 +43,24 @@ public class ProductServiceImpl implements ProductService {
     public void save(Product product) {
         logger.info("Save a product");
         logger.trace("Checking if the product already exists in the database");
-        if (duplicateFinder.lookForDuplicateInDb(product)) {
+        if (lookForDuplicate(product)) {
             logger.error("Exception while searching for duplicate - product already exists");
             throw new ResponseStatusException(HttpStatus.CONFLICT, "This product already exists in the database.");
         }
         logger.info("Saving the product");
         productRepo.save(product);
+    }
+
+    private boolean lookForDuplicate(Product product) {
+        logger.info("Looking for duplicate product in database");
+        logger.trace("Calling productRepo to find mission by its name");
+        logger.info("Returning result of check");
+        return productRepo.existsByMissionAndAcquisitionDateAndFootprintAndPriceAndUrl(
+                product.getMission(),
+                product.getAcquisitionDate(),
+                product.getFootprint(),
+                product.getPrice(),
+                product.getUrl());
     }
 
     @Override
@@ -71,7 +79,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProduct(long id) {
-        return productRepo.findById(id).orElseThrow();
+        return productRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found."));
     }
 
     @Override

@@ -3,6 +3,7 @@ package pl.strzelecki.spaceagency.model.DTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.Builder;
 import lombok.Data;
 import pl.strzelecki.spaceagency.model.serializer.LocalDateDeserializer;
 import pl.strzelecki.spaceagency.model.serializer.LocalDateSerializer;
@@ -26,6 +27,7 @@ public class ProductByTypeOrDateDTO {
     @JsonIgnore
     private String url;
 
+    @Builder
     public ProductByTypeOrDateDTO(long id, LocalDate acquisitionDate, String footprint, double price, String url, String missionName) {
         this.id = id;
         this.acquisitionDate = acquisitionDate;

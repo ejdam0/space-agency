@@ -50,7 +50,7 @@ public class MissionRestController {
             return new ResponseEntity<>(e.getMessage(), e.getStatus());
         }
         logger.info("Mission added successfully");
-        return new ResponseEntity<>("Added new mission:\n " + mission, HttpStatus.CREATED);
+        return new ResponseEntity<>("Added new mission.", HttpStatus.CREATED);
     }
 
     @PutMapping("/edit")

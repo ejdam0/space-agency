@@ -6,6 +6,7 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -37,7 +38,7 @@ public class ProductRestController {
         return new ResponseEntity<>(productService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/add")
+    @PostMapping(path = "/add", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> add(@RequestBody Product product) {
         logger.info("Add a product");
         logger.trace("Setting product ID to 0, to force saving");
@@ -51,7 +52,7 @@ public class ProductRestController {
             return new ResponseEntity<>(e.getMessage(), e.getStatus());
         }
         logger.info("Product added successfully");
-        return new ResponseEntity<>("Added new product:\n " + product, HttpStatus.CREATED);
+        return new ResponseEntity<>("Added new product.", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/remove/{productId}")

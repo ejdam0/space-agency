@@ -2,6 +2,10 @@ package pl.strzelecki.spaceagency.service.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.javers.core.Javers;
+import org.javers.core.JaversBuilder;
+import org.javers.core.diff.Change;
+import org.javers.core.diff.Diff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -10,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import pl.strzelecki.spaceagency.model.Mission;
 import pl.strzelecki.spaceagency.repository.MissionRepository;
 import pl.strzelecki.spaceagency.service.AgencyService;
-import pl.strzelecki.spaceagency.service.DuplicateFinder;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,13 +25,10 @@ public class MissionServiceImpl implements AgencyService<Mission> {
     private static final Logger logger = LogManager.getLogger(MissionServiceImpl.class);
 
     private MissionRepository missionRepo;
-    private DuplicateFinder<Mission> duplicateFinder;
 
     @Autowired
-    public MissionServiceImpl(MissionRepository missionRepo,
-                              DuplicateFinder<Mission> duplicateFinder) {
+    public MissionServiceImpl(MissionRepository missionRepo) {
         this.missionRepo = missionRepo;
-        this.duplicateFinder = duplicateFinder;
     }
 
     @Override
@@ -41,24 +41,47 @@ public class MissionServiceImpl implements AgencyService<Mission> {
     @Override
     public void save(Mission mission) {
         // need to check if mission id exists in the database
-        logger.info("There is no duplicate mission in the database");
-        logger.trace("Checking if mission set to edit is in the database");
-        Optional<Mission> result = missionRepo.findById(mission.getId());
-        if (mission.getId() != 0 && result.isEmpty()) {
+        logger.info("Save mission");
+        Optional<Mission> optMissionInDb = missionRepo.findById(mission.getId());
+        boolean checkIfExistsInDb = missionRepo.existsByName(mission.getName());
+
+        logger.info("Checking provided data against the database");
+        if (mission.getId() != 0 && optMissionInDb.isEmpty()) {
             logger.info("Mission set to edit does not exist in the database");
-            logger.error("Exception while searching for duplicate - mission does not exist");
+            logger.error("Exception while searching for mission - mission does not exist");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This mission does not exist in the database.");
+        } else if (mission.getId() == 0 && checkIfExistsInDb) {
+            logger.trace("Mission with that name exists in the database");
+            logger.error("Exception while adding mission - mission exists");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "This mission exists in the database.");
+        } else if (mission.getId() != 0 && !checkIfExistsInDb) {
+            logger.trace("Mission does not exist in the database");
+            logger.info("Saving new mission");
+            missionRepo.save(mission);
+        } else {
+            // mission id != 0, checkIfExistsInDb == false
+            logger.info("Mission id is other than 0 and does exist in the database");
+            logger.trace("Checking what's changed");
+            Javers javers = JaversBuilder.javers().build();
+            logger.trace("Getting result from optional mission");
+            Mission missionFromDb = null;
+            if (optMissionInDb.isPresent()) {
+                missionFromDb = optMissionInDb.get();
+            }
+            logger.trace("Comparing mission names");
+            Diff diff = javers.compare(missionFromDb, mission);
+            List<Change> changes = diff.getChanges();
+            logger.trace("Checking changes list size");
+            if (changes.size() != 0 && checkIfExistsInDb) {
+                logger.trace("Mission with that name exists in the database");
+                logger.error("Exception while editing mission - mission exists");
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "This mission exists in the database.");
+            } else {
+                logger.info("Changes applied to other properties than name");
+                logger.info("Editing mission");
+                missionRepo.save(mission);
+            }
         }
-        // need to check if mission name exists in the database
-        logger.info("Save a mission");
-        logger.trace("Checking if the mission already exists in the database");
-        if (duplicateFinder.lookForDuplicateInDb(mission)) {
-            logger.error("Exception while searching for duplicate - mission already exists");
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "This mission name already exists in the database.");
-        }
-        logger.info("Mission exists in the database (and can be edited) or is new");
-        logger.info("Saving the mission");
-        missionRepo.save(mission);
     }
 
     @Override
