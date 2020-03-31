@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ProductService extends AgencyService<Product> {
-
     Product getProduct(long id);
 
     List<ProductByMissionDTO> findAllByMissionName(String name);

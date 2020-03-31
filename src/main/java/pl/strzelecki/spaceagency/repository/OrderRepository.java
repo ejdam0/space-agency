@@ -11,10 +11,6 @@ import pl.strzelecki.spaceagency.model.Order;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-
-    @EntityGraph(value = "Order.op", type = EntityGraph.EntityGraphType.LOAD)
-    List<Order> findAll();
-
     @EntityGraph(value = "Order.op", type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT o FROM Order o JOIN FETCH o.orderedProducts WHERE o.person.id = :personId")
     List<Order> getOrderHistory(@Param("personId") long id);

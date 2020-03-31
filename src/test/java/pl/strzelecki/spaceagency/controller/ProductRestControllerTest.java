@@ -1,6 +1,8 @@
 package pl.strzelecki.spaceagency.controller;
 
-import org.apache.logging.log4j.core.util.Assert;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,16 +22,13 @@ import pl.strzelecki.spaceagency.service.ProductService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 
 @ExtendWith(MockitoExtension.class)
 class ProductRestControllerTest {
@@ -66,31 +65,28 @@ class ProductRestControllerTest {
     }
 
     @Test
-    void findAll() throws Exception {
-        given(productService.findAll()).willReturn(products);
-
-        mockMvc.perform(get("/products/all"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[0].id", is(Math.toIntExact(product.getId()))))
-                .andExpect(jsonPath("$..mission.id", is(Collections.singletonList(Math.toIntExact(mission.getId())))))
-                .andExpect(jsonPath("$.[0].footprint", is(product.getFootprint())))
-                .andExpect(jsonPath("$.[0].price", is(product.getPrice())));
-    }
-
-    @Test
     void add() throws Exception {
-        mockMvc.perform(post("/products/add"))
-                .andExpect(content().contentType(MediaType.ALL))
-                .andExpect(status().isOk());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        String requestJson = ow.writeValueAsString(product);
+
+        mockMvc.perform(post("/products/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+                .andDo(print())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isCreated());
     }
 
     @Test
-    void remove() {
-        productService.save(product);
-        productService.remove(productService.getProduct(product.getId()).getId());
-        Assert.isEmpty(product);
+    void remove() throws Exception {
+        productService.getProduct(product.getId());
+        productService.remove(product.getId());
+        mockMvc.perform(delete("/products/delete/" + product.getId()))
+                .andDo(print())
+                //.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
     }
 
     @Nested
@@ -129,6 +125,7 @@ class ProductRestControllerTest {
 
             mockMvc.perform(get("/products/search-by-name")
                     .param("mission-name", mission.getName()))
+                    .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$.[0].id", is(Math.toIntExact(productByMissionDTO.getId()))))

@@ -32,13 +32,6 @@ public class MissionServiceImpl implements AgencyService<Mission> {
     }
 
     @Override
-    public List<Mission> findAll() {
-        logger.info("Find all missions");
-        logger.trace("Calling missionRepo to find all missions");
-        return missionRepo.findAll();
-    }
-
-    @Override
     public void save(Mission mission) {
         // need to check if mission id exists in the database
         logger.info("Save mission");

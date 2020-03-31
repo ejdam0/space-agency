@@ -12,7 +12,9 @@ import pl.strzelecki.spaceagency.model.DTO.ProductByMissionDTO;
 import pl.strzelecki.spaceagency.model.DTO.ProductByTypeOrDateDTO;
 import pl.strzelecki.spaceagency.model.ImageryTypeEnum;
 import pl.strzelecki.spaceagency.model.Product;
+import pl.strzelecki.spaceagency.repository.ProductOrderRepository;
 import pl.strzelecki.spaceagency.repository.ProductRepository;
+import pl.strzelecki.spaceagency.service.BackupService;
 import pl.strzelecki.spaceagency.service.ProductService;
 
 import java.time.LocalDate;
@@ -26,17 +28,16 @@ public class ProductServiceImpl implements ProductService {
     private static final Logger logger = LogManager.getLogger(ProductServiceImpl.class);
 
     private ProductRepository productRepo;
+    private ProductOrderRepository productOrderRepository;
+    private BackupService backupService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepo) {
+    public ProductServiceImpl(ProductRepository productRepo,
+                              ProductOrderRepository productOrderRepository,
+                              BackupService backupService) {
         this.productRepo = productRepo;
-    }
-
-    @Override
-    public List<Product> findAll() {
-        logger.info("Find all products");
-        logger.trace("Calling productRepo to find all products");
-        return productRepo.findAll();
+        this.productOrderRepository = productOrderRepository;
+        this.backupService = backupService;
     }
 
     @Override
@@ -73,7 +74,10 @@ public class ProductServiceImpl implements ProductService {
             logger.error("Exception - Result is empty");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product with id: " + id + " not found.");
         }
-        logger.info("Deleting the product");
+        logger.trace("Performing backup of product and productOrder");
+        backupService.backupProductAndProductOrder(id);
+        logger.trace("Deleting product");
+        productOrderRepository.deleteProductOrder(id);
         productRepo.deleteById(id);
     }
 

@@ -8,9 +8,6 @@ import pl.strzelecki.spaceagency.model.Order;
 import java.util.List;
 
 public interface OrderService {
-
-    List<Order> getAllOrders();
-
     void create(OrderDTO order);
 
     List<Order> getOrderHistory(long id);

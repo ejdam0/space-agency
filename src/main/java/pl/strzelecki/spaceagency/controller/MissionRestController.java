@@ -26,16 +26,6 @@ public class MissionRestController {
         this.missionService = missionService;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Mission>> findAll() {
-        logger.info("Find all missions");
-        logger.trace("Calling missionService to find all missions");
-        List<Mission> result = missionService.findAll();
-        logger.trace("Checking size of results list. Returning responseEntity");
-        return result.size() == 0 ? new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
     @PostMapping("/add")
     public ResponseEntity<?> add(@RequestBody Mission mission) {
         logger.info("Add a mission");

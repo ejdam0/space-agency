@@ -31,13 +31,6 @@ public class ProductRestController {
         this.productService = productService;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Product>> findAll() {
-        logger.info("Find all products");
-        logger.trace("Calling productService to find all products");
-        return new ResponseEntity<>(productService.findAll(), HttpStatus.OK);
-    }
-
     @PostMapping(path = "/add", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> add(@RequestBody Product product) {
         logger.info("Add a product");
@@ -55,7 +48,7 @@ public class ProductRestController {
         return new ResponseEntity<>("Added new product.", HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/remove/{productId}")
+    @DeleteMapping(path = "/remove/{productId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> remove(@PathVariable("productId") long id) {
         logger.info("Remove a product");
         try {
@@ -66,7 +59,7 @@ public class ProductRestController {
             return new ResponseEntity<>(e.getMessage(), e.getStatus());
         }
         logger.info("Product removed successfully");
-        return new ResponseEntity<>("Deleted product with id: " + id, HttpStatus.OK);
+        return new ResponseEntity<>("Deleted product.", HttpStatus.OK);
     }
 
     @GetMapping("/search-by-name")

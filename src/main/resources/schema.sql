@@ -13,7 +13,7 @@ create table product (
 	id IDENTITY primary key,
 	mission_id integer not null references mission(id),
 	acquisition_date date not null default current_date,
-	footprint varchar(80) not null, 
+	footprint varchar(80) not null,
 	price real not null,
 	url varchar(200) not null
 );
@@ -43,5 +43,24 @@ drop table if exists product_order;
 create table product_order (
     order_id integer not null references orders(id),
     product_id integer not null references product(id),
+    quantity integer not null
+);
+
+drop table if exists product_copy;
+
+create table product_copy (
+	id IDENTITY primary key,
+	mission_id integer not null references mission(id),
+	acquisition_date date not null default current_date,
+	footprint varchar(80) not null,
+	price real not null,
+	url varchar(200) not null
+);
+
+drop table if exists product_order_copy;
+
+create table product_order_copy (
+    order_id integer not null references orders(id),
+    product_id integer not null references product_copy(id),
     quantity integer not null
 );

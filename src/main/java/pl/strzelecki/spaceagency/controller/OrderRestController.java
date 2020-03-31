@@ -28,11 +28,6 @@ public class OrderRestController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Order>> getAll() {
-        return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
-    }
-
     @PostMapping("/new")
     public ResponseEntity<?> add(@RequestBody OrderDTO orderDTO) {
         logger.info("Create new order");

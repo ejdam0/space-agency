@@ -1,6 +1,7 @@
 package pl.strzelecki.spaceagency.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pl.strzelecki.spaceagency.model.DTO.ProductByMissionDTO;
@@ -21,12 +22,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "FROM Product p WHERE p.mission.name = :missionName")
     List<ProductByMissionDTO> findAllByMissionName(@Param("missionName") String theMissionName);
 
-
     @Query("SELECT new pl.strzelecki.spaceagency.model.DTO.ProductByTypeOrDateDTO" +
             "(p.id, p.acquisitionDate, p.footprint, p.price, p.url, p.mission.name) " +
             "FROM Product p WHERE p.mission.imageryType = :productType")
     List<ProductByTypeOrDateDTO> findAllByProductType(@Param("productType") ImageryTypeEnum productType);
-
 
     @Query("SELECT new pl.strzelecki.spaceagency.model.DTO.ProductByTypeOrDateDTO" +
             "(p.id, p.acquisitionDate, p.footprint, p.price, p.url, p.mission.name) " +
@@ -44,4 +43,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<ProductByTypeOrDateDTO> findAllBetweenAcquisitionDates(@Param("firstProvidedDate") LocalDate firstDate,
                                                                 @Param("secondProvidedDate") LocalDate secondDate);
 
+    @Query(value = "insert into product_copy select * from " +
+            "product where id NOT IN (select id from product_copy) " +
+            "AND id = :productId", nativeQuery = true)
+    @Modifying
+    void backupProduct(@Param("productId") long id);
 }

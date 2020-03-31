@@ -40,11 +40,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
-    }
-
-    @Override
     public void create(OrderDTO orderDTO) {
         // save order to get it's id from db
         logger.info("Create new order");
