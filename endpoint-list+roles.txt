@@ -29,3 +29,6 @@ CUS:
 	$2y$12$6OKjjO.7OHd2vO.2/w2yDuNZypyb2BhpgYCnla3YLH5W2w8cfpGri
 2. username - hkrupa, pass - krupah
 	$2y$12$GKOoIswTbscuu9DmYc8JQ.OFA5yPPpMLrxMJv3Z/MVntvxoLZ/QtW
+	
+	
+swagger address: http://localhost:8080/space_agency_war/swagger-ui.html

@@ -54,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/products/search-by-type").hasAnyRole("CM", "CUS")
                 .antMatchers("/products/search-by-date").hasAnyRole("CM", "CUS")
                 .antMatchers("/db-console/**").permitAll()
+                .antMatchers("/start/**").permitAll()
                 .and()
                 .httpBasic().realmName(REALM)
                 .authenticationEntryPoint(getBasicAuthEntryPoint())
