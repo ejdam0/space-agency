@@ -1,0 +1,31 @@
+/missions
+CM			POST 	/add
+CM			PUT 	/edit
+CM			DELETE	/remove/{missionId}
+	
+/orders
+CUS|CM		POST	/new
+CM			GET		/history				@RequestParam(value = "customer-id")
+CM			GET		/top-products
+CM			GET		/top-missions
+	
+/products
+CM			POST	/add
+CM			DELETE	/remove/{productId}
+CUS|CM		GET		/search-by-name			@RequestParam(value = "mission-name")
+CUS|CM		GET		/search-by-type			@RequestParam(value = "product-type")
+CUS|CM		GET		/search-by-date			@RequestParam(value = "flag")
+											@RequestParam(value = "first-date")
+											@RequestParam(value = "second-date", required = false)
+
+CM:
+1. username - pnowak, pass - nowakp 			
+	$2y$12$peXvjD5WkAI0eZ8Zh91ZI.bKQfefE9/oysAHeRObW066MZadluwDK
+2. username - jkowalski, pass - kowalskij
+	$2y$12$tVHFqXl0HVxvRgoSAbaN3.g/OQatolmTi7EZPwPEDx1zlZLw2bZie
+
+CUS:
+1. username - amarciniak, pass - marciniaka
+	$2y$12$6OKjjO.7OHd2vO.2/w2yDuNZypyb2BhpgYCnla3YLH5W2w8cfpGri
+2. username - hkrupa, pass - krupah
+	$2y$12$GKOoIswTbscuu9DmYc8JQ.OFA5yPPpMLrxMJv3Z/MVntvxoLZ/QtW

@@ -12,6 +12,7 @@ import pl.strzelecki.spaceagency.model.DTO.ProductByMissionDTO;
 import pl.strzelecki.spaceagency.model.DTO.ProductByTypeOrDateDTO;
 import pl.strzelecki.spaceagency.model.ImageryTypeEnum;
 import pl.strzelecki.spaceagency.model.Product;
+import pl.strzelecki.spaceagency.repository.MissionRepository;
 import pl.strzelecki.spaceagency.repository.ProductOrderRepository;
 import pl.strzelecki.spaceagency.repository.ProductRepository;
 import pl.strzelecki.spaceagency.service.BackupService;
@@ -30,14 +31,17 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepo;
     private ProductOrderRepository productOrderRepository;
     private BackupService backupService;
+    private MissionRepository missionRepository;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepo,
                               ProductOrderRepository productOrderRepository,
-                              BackupService backupService) {
+                              BackupService backupService,
+                              MissionRepository missionRepository) {
         this.productRepo = productRepo;
         this.productOrderRepository = productOrderRepository;
         this.backupService = backupService;
+        this.missionRepository = missionRepository;
     }
 
     @Override
@@ -47,6 +51,11 @@ public class ProductServiceImpl implements ProductService {
         if (lookForDuplicate(product)) {
             logger.error("Exception while searching for duplicate - product already exists");
             throw new ResponseStatusException(HttpStatus.CONFLICT, "This product already exists in the database.");
+        }
+        logger.trace("Checking if mission exists in the database");
+        if (!missionRepository.existsById(product.getMission().getId())) {
+            logger.error("Exception while searching for mission - mission does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Mission does not exist in the database");
         }
         logger.info("Saving the product");
         productRepo.save(product);

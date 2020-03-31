@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,7 +29,7 @@ public class OrderRestController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/new")
+    @PostMapping(path = "/new", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> add(@RequestBody OrderDTO orderDTO) {
         logger.info("Create new order");
         try {
@@ -41,10 +42,10 @@ public class OrderRestController {
 
         }
         logger.info("New order added successfully");
-        return new ResponseEntity<>("Added new order:\n " + orderDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>("Added new order.", HttpStatus.CREATED);
     }
 
-    @GetMapping("/history")
+    @GetMapping(path = "/history", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> getOrdersHistoryOfCustomer(@RequestParam(value = "person-id") long id) {
         logger.info("Get history of orders");
         List<Order> result;
@@ -59,7 +60,7 @@ public class OrderRestController {
                 new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/top-products")
+    @GetMapping(path = "/top-products", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> getMostOrderedProducts() {
         logger.info("Get most ordered products");
         List<TopProductDTO> result;
@@ -74,7 +75,7 @@ public class OrderRestController {
                 new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/top-missions")
+    @GetMapping(path = "/top-missions", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> getMostOrderedMissions() {
         logger.info("Get most ordered missions");
         List<TopMissionDTO> result;

@@ -5,13 +5,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pl.strzelecki.spaceagency.model.Mission;
 import pl.strzelecki.spaceagency.service.AgencyService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/missions")
@@ -26,7 +25,7 @@ public class MissionRestController {
         this.missionService = missionService;
     }
 
-    @PostMapping("/add")
+    @PostMapping(path = "/add", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> add(@RequestBody Mission mission) {
         logger.info("Add a mission");
         logger.trace("Setting mission ID to 0, to force saving");
@@ -43,7 +42,7 @@ public class MissionRestController {
         return new ResponseEntity<>("Added new mission.", HttpStatus.CREATED);
     }
 
-    @PutMapping("/edit")
+    @PutMapping(path = "/edit", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> edit(@RequestBody Mission mission) {
         logger.info("Edit a mission");
         try {

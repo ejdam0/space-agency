@@ -26,7 +26,8 @@ import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -40,13 +41,17 @@ class ProductRestControllerTest {
     ProductRestController productRestController;
 
     MockMvc mockMvc;
-
     Mission mission;
     Product product;
-    List<Product> products = new ArrayList<>();
+    String requestJson;
 
     @BeforeEach
     void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(productRestController).build();
+    }
+
+    @Test
+    void addSuccess() throws Exception {
         mission = new Mission(1,
                 "Test-mission-name",
                 ImageryTypeEnum.HYPERSPECTRAL,
@@ -59,40 +64,23 @@ class ProductRestControllerTest {
                 "Test-product-footprint",
                 1D,
                 "Test-product-url");
-        products.add(product);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(productRestController).build();
-    }
-
-    @Test
-    void add() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson = ow.writeValueAsString(product);
+        requestJson = ow.writeValueAsString(product);
 
         mockMvc.perform(post("/products/add")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson))
+                .content(this.requestJson))
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isCreated());
     }
 
-    @Test
-    void remove() throws Exception {
-        productService.getProduct(product.getId());
-        productService.remove(product.getId());
-        mockMvc.perform(delete("/products/delete/" + product.getId()))
-                .andDo(print())
-                //.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk());
-    }
-
     @Nested
     class TestByArgs {
 
-        Mission mission;
         ProductByMissionDTO productByMissionDTO;
         ProductByTypeOrDateDTO productByTypeOrDateDTO;
 
@@ -152,7 +140,9 @@ class ProductRestControllerTest {
 
             @Test
             void findByProductType() throws Exception {
-                given(productService.findAllByProductType(mission.getImageryType().name())).willReturn(productByTypeOrDateDTOList);
+                given(productService.findAllByProductType(mission.getImageryType().name()))
+                        .willReturn(productByTypeOrDateDTOList);
+
                 mockMvc.perform(get("/products/search-by-type")
                         .param("product-type", mission.getImageryType().name()))
                         .andExpect(status().isOk())

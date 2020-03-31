@@ -575,7 +575,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/space_agency_war/orders/top-products",
+					"raw": "http://localhost:8080/space_agency_war/orders/top-missions",
 					"protocol": "http",
 					"host": [
 						"localhost"
